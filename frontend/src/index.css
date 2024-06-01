@@ -1,0 +1,33 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: "Manrope", sans-serif;
+}
+
+/* . stripe-custom-class form button {
+    @apply bg-b1ue-600 text-white px-4 py-l; */
+
+
+
+::-webkit-scrollbar {
+    width: 6px;
+    /* Width of the scrollbar 8/ */
+
+}
+
+
+::-webkit-scrollbar-thumb {
+    background-color: #ff194b92;
+    border-radius: 20px;
+    transition: 1s;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background: #b68bdcf1;
+    transition: 1s;
+}
