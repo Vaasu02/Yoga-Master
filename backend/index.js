@@ -269,7 +269,7 @@ async function run() {
       const projection = { classId: 1 };
       const carts = await cartCollection.find(query, {
         projection: projection,
-      });
+      }).toArray();
       const classIds = carts.map((cart) => new ObjectId(cart.classId));
       const query2 = { _id: { $in: classIds } };
       const result = await classesCollection.find(query2).toArray();
