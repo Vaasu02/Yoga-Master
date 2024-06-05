@@ -15,6 +15,8 @@
     "@headlessui/react": "^2.0.3",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@mui/system": "^5.15.15",
+    "@stripe/react-stripe-js": "^2.7.1",
+    "@stripe/stripe-js": "^3.5.0",
     "@tanstack/react-query": "^5.36.2",
     "aos": "^2.3.4",
     "axios": "^1.7.2",
@@ -32,6 +34,7 @@
     "react-toastify": "^10.0.5",
     "sort-by": "^1.2.0",
     "spinners": "^1.2.2",
+    "stripe": "^15.9.0",
     "styled-components": "^6.1.11",
     "sweetalert2": "^11.11.0",
     "swiper": "^11.1.3"

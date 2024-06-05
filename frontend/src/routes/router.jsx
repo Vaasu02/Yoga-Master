@@ -13,7 +13,7 @@ import EnrolledClasses from "../pages/Dashboard/Student/Enroll/EnrolledClasses"
 import SelectedClass from "../pages/Dashboard/Student/SelectedClass"
 import MyPaymentHistory from "../pages/Dashboard/Student/Payment/History/MyPaymentHistory"
 import AsInstructor from "../pages/Dashboard/Student/Apply/AsInstructor"
-import Payment from "../pages/Dashboard/Student/Payment/History/Payment"
+import Payment from "../pages/Dashboard/Student/Payment/Payment"
 
 const router = createBrowserRouter([
   {

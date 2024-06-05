@@ -6,6 +6,8 @@ const stripe = require("stripe")(process.env.PAY_KEY);
 const jwt=require('jsonwebtoken');
 const port = process.env.PORT || 5000;
 
+// console.log(process.env.PAY_KEY)
+
 //middlewares
 app.use(cors());
 app.use(express.json());
@@ -291,8 +293,8 @@ async function run() {
       const amount = parseInt(price) * 100;
       const paymentIntent = await stripe.paymentIntents.create({
         amount: amount,
-        currency: "usd",
-        payment_method_types: ["card"],
+        currency: 'usd',
+        payment_method_types: ['card'],
       });
       res.send({
         clientSecret: paymentIntent.client_secret,
@@ -316,13 +318,13 @@ async function run() {
       const classes = await classesCollection.find(classesQuery).toArray();
       const newEnrolledData = {
         userEmail: userEmail,
-        classId: signleClassId.map(id => new ObjectId(id)),
+        classId: classesId.map(id => new ObjectId(id)),
         trasnsactionId: paymentInfo.trasnsactionId
         };
         const updatedDoc = {
         $set: {
-        totalEnrolled: classes.reduce((total, current) => total + current.totalEnrolled, e) + 1 || 0,
-        availableSeats: classes.reduce((total, current) => total + current.availableSeats, e) + 1 || 0
+        totalEnrolled: classes.reduce((total, current) => total + current.totalEnrolled, 0) + 1 || 0,
+        availableSeats: classes.reduce((total, current) => total + current.availableSeats, 0) - 1 || 0
         }
         };
         const updatedResult = await classesCollection.updateMany (classesQuery, updatedDoc, {upsert: true});
@@ -335,7 +337,7 @@ async function run() {
     });
 
     //payment history length
-    app.get("/payment-history-length/:email",async(req,res)=>{
+    app.get("/payment-history/:email",async(req,res)=>{
       const email=req.params.email;
       const query={userEmail:email};
       const total=await paymentCollection.countDocuments(query);
