@@ -14,6 +14,8 @@ import SelectedClass from "../pages/Dashboard/Student/SelectedClass"
 import MyPaymentHistory from "../pages/Dashboard/Student/Payment/History/MyPaymentHistory"
 import AsInstructor from "../pages/Dashboard/Student/Apply/AsInstructor"
 import Payment from "../pages/Dashboard/Student/Payment/Payment"
+import InstructorCP from "../pages/Dashboard/Instructor/InstructorCP"
+import AddClass from "../pages/Dashboard/Instructor/AddClass"
 
 const router = createBrowserRouter([
   {
@@ -80,6 +82,16 @@ const router = createBrowserRouter([
       {
         path:"user/payment",
         element:<Payment/>
+      },
+
+      // instructor routes
+      {
+        path:"instructor-cp",
+        element:<InstructorCP/>
+      },
+      {
+        path:"add-class",
+        element:<AddClass/>
       }
     ]
   }

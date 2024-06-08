@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { FaSun, FaMoon, FaBars } from "react-icons/fa";
 import useThemeSwitcher from '../hook/useThemeSwitcher'
 import { motion } from 'framer-motion';
+import { AuthContext } from "../../utilities/providers/AuthProvider";
+import Swal from 'sweetalert2'
 
 
 const navLinks = [
@@ -22,7 +24,7 @@ const Navbar = () => {
   const [isFixed, setIsFixed] = useState(false);
   const [isDarkMode, setIsDarkMode] = useThemeSwitcher();
   const [navBg, setNavBg] = useState("bg-[#15151580]");
-  const user = true;
+  const {logout,user}=useContext(AuthContext);
 
   const toggleMobileMenu = () => {
     seIsMobileMenuOpen(!isMobileMenuOpen);
@@ -59,8 +61,33 @@ const Navbar = () => {
     };
   });
 
-  const handelLogout = () => {
+  const handelLogout = (e) => {
+    e.preventDefault();
     console.log("logged out");
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, logout me!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout()
+        .then(()=>{
+          Swal.fire({
+            title: "Logged Out!",
+            text: "Your are successfully Logged out.",
+            icon: "success"
+          });
+        })
+        .catch((err)=>{
+          Swal.fire("Error!",err.message,"error")
+        })
+        
+      }
+    });
   }
 
   useEffect(() => {

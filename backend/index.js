@@ -336,8 +336,15 @@ async function run() {
         
     });
 
+    app.get('/payment-history/:email',async(req,res)=>{
+      const email=req.params.email;
+      const query={userEmail:email};
+      const result=await paymentCollection.find(query).sort({date:-1}).toArray();
+      res.send(result);
+    })
+
     //payment history length
-    app.get("/payment-history/:email",async(req,res)=>{
+    app.get("/payment-history-length/:email",async(req,res)=>{
       const email=req.params.email;
       const query={userEmail:email};
       const total=await paymentCollection.countDocuments(query);
@@ -458,7 +465,11 @@ async function run() {
           $project:{
             _id:0,
             classes:1,
-            instructor:{$arrayElemAt:["$instructor",0]}
+            instructor:{
+              $arrayElemAt:["$instructor",0]
+            }
+            
+            
 
           
           }
@@ -466,6 +477,7 @@ async function run() {
       ]
 
       const result=await enrolledCollection.aggregate(pipeline).toArray();
+      // const result=await enrolledCollection.find(query).toArray();
       res.send(result);
     })
     

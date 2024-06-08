@@ -112,7 +112,7 @@ const CheckoutPayment = ({ price, cartitem }) => {
           console.log(res);
           if(res.deleteResult.deletedCount > 0 && res.paymentResult.insertedId && res.updatedResult.modifiedCount > 0){
             setsucceeded('Payment Successfull,You can now access your classes');
-            navigate('/dashboard/enrolled-class');
+            // navigate('/dashboard/enrolled-class');
             
           }else{
             setsucceeded('Payment Failed,Please try again..')
