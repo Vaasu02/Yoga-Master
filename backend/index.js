@@ -153,7 +153,7 @@ async function run() {
     // classes routes here
     app.post("/new-class",verifyJWTtoken,verifyInstructor, async (req, res) => {
       const newClass = req.body;
-      // newClass.availableSeats parseInt(newClass.availableSeats);
+      newClass.availableSeats =parseInt(newClass.availableSeats);
       const result = await classesCollection.insertOne(newClass);
       res.send(result);
     });
@@ -161,7 +161,7 @@ async function run() {
     //get all data
     app.get("/classes", async (req, res) => {
       const query = { status: "approved" };
-      const result = await classesCollection.find().toArray();
+      const result = await classesCollection.find(query).toArray();
       res.send(result);
     });
 

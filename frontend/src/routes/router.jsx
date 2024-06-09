@@ -16,6 +16,9 @@ import AsInstructor from "../pages/Dashboard/Student/Apply/AsInstructor"
 import Payment from "../pages/Dashboard/Student/Payment/Payment"
 import InstructorCP from "../pages/Dashboard/Instructor/InstructorCP"
 import AddClass from "../pages/Dashboard/Instructor/AddClass"
+import MyClasses from "../pages/Dashboard/Instructor/MyClasses"
+import PendingCourse from "../pages/Dashboard/Instructor/PendingCourse"
+import Approvedcourse from "../pages/Dashboard/Instructor/Approvedcourse"
 
 const router = createBrowserRouter([
   {
@@ -92,6 +95,18 @@ const router = createBrowserRouter([
       {
         path:"add-class",
         element:<AddClass/>
+      },
+      {
+        path:'my-classes',
+        element:<MyClasses/>
+      },
+      {
+        path:"my-pending",
+        element:<PendingCourse/>
+      },
+      {
+        path:"my-approved",
+        element:<Approvedcourse/>
       }
     ]
   }

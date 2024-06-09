@@ -2,26 +2,49 @@ import React, { useState } from 'react'
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
 import useUser from '../../../hooks/useUser';
 
+const imgkey = import.meta.env.VITE_IMGDB_TOKEN;
+
 const AddClass = () => {
+    const APT_KEY = `https://api.imgbb.com/1/upload?key=${imgkey}&name=`
     const axioSecure = useAxiosSecure();
     const { currentUser, isloading } = useUser();
     const [image, setimage] = useState(null);
 
     const HandleImageChange = (e) => {
-        const file=e.target.files[0];
+        const file = e.target.files[0];
         setimage(file);
     }
 
-    const handleformsubmit=(e)=>{
+    const handleformsubmit = (e) => {
         e.preventDefault();
-        const formdata=new FormData(e.target);
+        const formdata = new FormData(e.target);
         // console.log(formdata);
-        const newdta=Object.fromEntries(formdata);
-        formdata.append('file',image);
+        const newdta = Object.fromEntries(formdata);
+        formdata.append('file', image);
         // console.log(newdta);
 
+        fetch(APT_KEY, {
+            method: "POST",
+            body: formdata
+        }).then(res => res.json()).then(data => {
+            console.log(data);
+            if (data.success === true) {
+                console.log(data.data.display_url);
+                newdta.image = data.data.display_url;
+                newdta.instructorName = currentUser?.name;
+                newdta.instructorEmail = currentUser?.email;
+                newdta.status = 'pending';
+                newdta.submitted = new Date();
+                newdta.totalEnrolled = 0;
+                axioSecure.post('/new-class', newdta).then(res => {
+                    alert("successfullt added class");
+                    console.log(res.data);
+                })
+            }
+        })
+
     }
-    if(isloading){
+    if (isloading) {
         return <div>Loading...</div>
     }
     return (
@@ -30,9 +53,9 @@ const AddClass = () => {
                 <h1 className="text-center text-3xl font-bold">Add Your Course</h1>
             </div>
 
-            <form onSubmit={handleformsubmit} className="mx-auto p-6 bg-white rounded shadow">
-                <div className="grid grid-cols-2 w-full gap-3 items-center">
-                    <div className="mb-6">
+            <form onSubmit={handleformsubmit} className="mx-auto p-6 bg-white w-full rounded shadow">
+                <div className="grid grid-cols-2 w-full gap-3 items-center text-nowrap">
+                    <div className="mb-6 ">
                         <label htmlFor="name" className="block text-gray-700 font-bold mb-2">Course Name</label>
                         <input type="text" required placeholder='Your Course Name' name='name' id='name' className='w-full px-4 py-2 border border-secondary rounded-md focus:outline-none focus:ring-blue-500' />
                     </div>
@@ -47,11 +70,11 @@ const AddClass = () => {
                     <div className="grid gap-3 grid-cols-2">
                         <div className="mb-6">
                             <label htmlFor="instructorname" className="block text-gray-700 font-bold mb-2">Instructor Name</label>
-                            <input value={currentUser?.name} readOnly disabled type="text" className="px-4 py-2 border border-secondary rounded-md focus:outline-none focus:ring-blue-500" name='instructorname' />
+                            <input value={currentUser?.name} readOnly disabled type="text" className="px-4 py-2 border border-secondary w-full rounded-md focus:outline-none focus:ring-blue-500" name='instructorname' />
                         </div>
                         <div className="mb-6">
                             <label htmlFor="instructoremail" className="block text-gray-700 font-bold mb-2">Instructor Email</label>
-                            <input value={currentUser?.email} readOnly disabled type="text" className="px-4 py-2 border border-secondary rounded-md focus:outline-none focus:ring-blue-500" name='instructoremail' />
+                            <input value={currentUser?.email} readOnly disabled type="text" className="px-4 w-full py-2 border border-secondary rounded-md focus:outline-none focus:ring-blue-500" name='instructoremail' />
                         </div>
                     </div>
                 </div>
@@ -59,19 +82,19 @@ const AddClass = () => {
                 <div className="grid grid-cols-2 w-full gap-3 items-center">
                     <div className="mb-6">
                         <label htmlFor="avialabelseats" className="block text-gray-700 font-bold mb-2">Avialabel Seats</label>
-                        <input required type="number" className="px-4 py-2 border border-secondary rounded-md focus:outline-none focus:ring-blue-500" name='avialabelseats' placeholder='How many seats?' />
+                        <input required type="number" className="px-4 w-full py-2 border border-secondary rounded-md focus:outline-none focus:ring-blue-500" name='avialabelseats' placeholder='How many seats?' />
                     </div>
 
                     <div className="mb-6">
                         <label htmlFor="price" className="block text-gray-700 font-bold mb-2">Price</label>
-                        <input required type="number" className="px-4 py-2 border border-secondary rounded-md focus:outline-none focus:ring-blue-500" name='price' placeholder='Enter Your Course Price' />
+                        <input required type="number" className="px-4 w-full py-2 border border-secondary rounded-md focus:outline-none focus:ring-blue-500" name='price' placeholder='Enter Your Course Price' />
                     </div>
                 </div>
 
                 <div className="mb-6">
                     <label htmlFor="videolink" className="block text-gray-700 font-bold mb-2">Youtube Link</label>
                     <p className="text-[12px] my-2 mt-2 text-secondary">Only youtube video are supported</p>
-                    <input required type="text" className="px-4 py-2 border border-secondary rounded-md focus:outline-none focus:ring-blue-500" name='videolink' placeholder='Your course intro Link?' />
+                    <input required type="text" className="px-4 w-full py-2 border border-secondary rounded-md focus:outline-none focus:ring-blue-500" name='videolink' placeholder='Your course intro Link?' />
                 </div>
 
                 <div className="mb-6">
@@ -80,7 +103,7 @@ const AddClass = () => {
                 </div>
 
                 <div className="text-center w-full">
-                    <button className="bg-secondary w-full hover:bg-red-400 duration-200 text-white font-bold oy-2 px-4 rounded" type='submit'>Add New Course</button>
+                    <button className="bg-secondary w-full hover:bg-red-400 duration-200 text-white font-bold oy-2 px-4 py-3 rounded" type='submit'>Add New Course</button>
                 </div>
             </form>
         </div>
